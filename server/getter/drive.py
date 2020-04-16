@@ -4,7 +4,7 @@
 #                               MIT LICENCE 2020                                                  #
 #                                                                                                 #
 # This file makes a call for the GDrive api, getting the parent, the id and weblink of each file  #
-# Making it useful to generate a tree graph structure                                             #
+#                                                                                                 #
 ###################################################################################################
 
 
@@ -26,14 +26,14 @@ class Drive():
     def __init__(self):
         creds = None #Check if the credentials are still useful
 
-        self.root = "1WCP6PKTKEJI5qbjq2GTXPhTlzGoMH6Sz"
-        self.sources = list()
-
+        self.root = "19GLVDseQyMm8YxDxaMxebHvkp2o821E3"
+        self.sources = dict()
+        self.relations = dict()
         self.fields = (("files/webViewLink, files/name, ")+
                        ("files/id, files/mimeType, files/parents"))
 
         if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
+            with open('getter/token.pickle', 'rb') as token:
                 creds = pickle.load(token)
 
         if not creds or not creds.valid:
@@ -41,9 +41,9 @@ class Drive():
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', SCOPES)
+                    'getter/credentials.json', SCOPES)
                 creds = flow.run_local_server(port=0)
-            with open('token.pickle', 'wb') as token:
+            with open('getter/token.pickle', 'wb') as token:
                 pickle.dump(creds, token)
 
         self.service = build('drive', 'v3', credentials=creds)
@@ -51,29 +51,38 @@ class Drive():
     def list_elements(self):
         folder_name = "application/vnd.google-apps.folder"
         parents = set([self.root])
+        self.relations = dict()
         while (len(parents)>0):
             actual_parent = parents.pop()
-
+            childs = []
             items = self._make_request(actual_parent)
 
             for item in items:
                 if item["mimeType"] == folder_name:
                     parents.add(item["id"])
-                
-                relevant_data = {"id":item["id"],"name":item["name"], 
+                childs.append(item["id"])
+                relevant_data = {item["id"]:{"id":item["id"],"name":item["name"], 
                                  "parent":item["parents"], 
-                                 "webViewLink": item["webViewLink"]}
-                self.sources.append(relevant_data)
+                                 "webViewLink": item["webViewLink"]}}
+                self.sources.update(relevant_data)
+                self.relations.update({actual_parent:childs})
 
-        return self.sources
+
+        return self.sources, self.relations
 
     def _make_request(self, folderId):
         res = self.service.files().list(
                 q=f"'{folderId}' in parents", fields=self.fields).execute()["files"]
         
         return res
-if __name__ == '__main__':
+
+
+def main():
     drive = Drive()
     drive.list_elements()
-    for a in drive.sources:
-        print(f"{a['name']} :: {a['id']} :: {a['parent']}")
+
+    with open("getter/data/data.json", "w", encoding="utf-8") as f:
+        json.dump(drive.sources, f, indent=4)
+    with open("getter/data/relations.json", "w", encoding="utf-8") as f:
+        json.dump(drive.relations, f, indent=4)
+    

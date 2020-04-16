@@ -1,12 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:LoDamosVuelta/utils/cursoBtn.dart';
+import 'package:LoDamosVuelta/utils/cloud.dart';
 
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String id = 'homeScreen';
   @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+
+
+  List<Widget> listaElems;
+  void getData() async {
+    var data = await fetchData("");
+    listaElems = createBoxes(data);
+    
+  }
+
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  List<Widget> displayElems(){return listaElems;}
+  
+  
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+return MaterialApp(
         home: Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -53,35 +79,9 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(
               height: 40.0,
-            ),
-
-            CourseBtn("HOLAA",  "AA", Colors.red),
-
-            
-                        SizedBox(
-              height: 15.0,
-            ),
-                        Container(
-              height: 30,
-              width: 150,
-              color: Colors.green,
-              child: FlatButton(
-                child: Text("CURSOS"),
-                onPressed: () {},
-              ),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-                        Container(
-              height: 30,
-              width: 150,
-              color: Colors.green,
-              child: FlatButton(
-                child: Text("CURSOS"),
-                onPressed: () {},
-              ),
-            )
+            ),  
+          ...displayElems()
+          
           ],
         ),
       ),

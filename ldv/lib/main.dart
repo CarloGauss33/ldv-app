@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
-import "utils/cloud.dart";
 
 void main() => runApp(LDV());
 
