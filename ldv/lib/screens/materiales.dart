@@ -5,22 +5,26 @@ import 'package:LoDamosVuelta/utils/cloud.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter/widgets.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String id = 'homeScreen';
+class MaterialScreen extends StatefulWidget {
+  static const String id = 'materialScreen';
+
+  String route;
+  MaterialScreen(String route){
+    this.route = route;
+  }
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _MaterialScreenState createState() => _MaterialScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  bool _showSpiner = true;
+class _MaterialScreenState extends State<MaterialScreen> {
   @override
   void initState() {
     super.initState();
   }
 
   Future<List<Widget>> display() async {
-    List<Widget> lista = await createBoxes("root");
-    _showSpiner = true;
+    List<Widget> lista = await createBoxes(widget.route);
     return lista;
   }
 
@@ -29,8 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ), 
           title: Text("Lo Damos Vuelta"),
           backgroundColor: Colors.orange,
+          centerTitle: true,
         ),
         body: Container(
           decoration: BoxDecoration(

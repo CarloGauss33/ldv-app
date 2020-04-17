@@ -32,7 +32,7 @@ class Drive():
         self.fields = (("files/webViewLink, files/name, ")+
                        ("files/id, files/mimeType, files/parents"))
 
-        if os.path.exists('token.pickle'):
+        if os.path.exists('getter/token.pickle'):
             with open('getter/token.pickle', 'rb') as token:
                 creds = pickle.load(token)
 
