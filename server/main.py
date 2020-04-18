@@ -25,11 +25,9 @@ def childs(parent):
     try:
         rel_data = get_relations()[parent]
         new_res = dict()
-        print(rel_data)
         childs = []
         
         for child in rel_data:
-            print(child)
             c_data = get_data_of(child)
             childs.append({child:c_data})
         

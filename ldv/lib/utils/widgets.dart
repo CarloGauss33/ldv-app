@@ -33,7 +33,7 @@ Future<List<Widget>> createBoxes(String url) async {
     data.forEach((k, v) {
       for (int i = 0; i < keys.length; i++) {
         var key = keys[i];
-        textList.add([v[i][key]["name"], v[i][key]["id"]]);
+        textList.add([v[i][key]["name"], v[i][key]["id"], v[i][key]["webViewLink"]]);
       }
     });
 
@@ -43,8 +43,9 @@ Future<List<Widget>> createBoxes(String url) async {
       lista.add(SizedBox(
         height: 10,
       ));
-      lista.add(CourseBtn(f[0], Colors.blue, f[1]));
+      lista.add(CourseBtn(f[0], Colors.blue, f[1], f[2]));
     });
+
 
     return lista;
   }

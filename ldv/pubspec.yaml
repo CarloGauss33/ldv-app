@@ -14,6 +14,9 @@ dependencies:
   file_picker: ^1.3.8
   http: any
   modal_progress_hud: ^0.1.3
+  url_launcher: ^5.4.2
+  flutter_staggered_animations: ^0.1.2
+
 
   cupertino_icons: ^0.1.2
 
