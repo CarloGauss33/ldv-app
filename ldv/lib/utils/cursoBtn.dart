@@ -23,14 +23,22 @@ class CourseBtn extends StatelessWidget {
       this.text = this.text.replaceAll(".doc", "");
       this.color = Colors.red[300];
     }
+
+    else if (this.text.contains(".mp4")) {
+      print(this.text);
+      this.text = this.text.replaceAll(".mp4", "");
+      this.color = Colors.deepOrange;
+    }
   }
 
   Future<void> _launchInBrowser() async {
     if (await canLaunch(this.webViewLink)) {
       await launch(
         this.webViewLink,
-        forceSafariVC: false,
         forceWebView: false,
+        forceSafariVC: false,
+        enableJavaScript: true,
+        enableDomStorage: true,
       );
     } else {
       throw 'Could not launch $this.webViewLink';

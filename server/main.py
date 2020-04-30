@@ -55,5 +55,5 @@ def get_data_of(ElementId):
     return res
 
 if __name__ == '__main__':
-    # drive.main()
+    drive.main()
     app.run(host= '0.0.0.0')

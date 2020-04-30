@@ -18,16 +18,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Container(
-          child: FlatButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MaterialScreen("root")),
-                );
-              },
-              child: Text("")),
+        body: Center(
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.red,
+            child: FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MaterialScreen("root")),
+                  );
+                },
+                child: Text("AAAAAAa")),
+          ),
         ),
       ),
     );
